@@ -311,10 +311,10 @@ def main():
     tester = StudentParticipationAPITester()
     
     # Test teacher registration
-    email = tester.generate_random_email()
     password = "Password123!"
+    success, email = tester.test_register()
     
-    if not tester.test_register():
+    if not success:
         print("❌ Teacher registration failed, stopping tests")
         return 1
 
