@@ -1,26 +1,3 @@
-#!/bin/bash
-
-mkdir -p code_export
-
-# Export backend files
-echo "Exporting backend files..."
-mkdir -p code_export/backend
-cp /app/backend/server.py code_export/backend/
-cp /app/backend/.env code_export/backend/
-cp /app/backend/requirements.txt code_export/backend/
-
-# Export frontend files
-echo "Exporting frontend files..."
-mkdir -p code_export/frontend/src
-cp /app/frontend/package.json code_export/frontend/
-cp /app/frontend/.env code_export/frontend/
-cp /app/frontend/src/App.js code_export/frontend/src/
-cp /app/frontend/src/App.css code_export/frontend/src/
-cp /app/frontend/src/index.js code_export/frontend/src/
-cp /app/frontend/src/index.css code_export/frontend/src/
-
-# Create a README.md file
-cat > code_export/README.md << 'EOL'
 # Student Participation Assessment Web App
 
 ## Overview
@@ -45,6 +22,3 @@ A web application for teachers to track and assess student participation in clas
 ## Environment Variables
 - Backend needs MongoDB URL in .env
 - Frontend needs backend URL in .env
-EOL
-
-echo "Code export complete! Files are in the code_export directory."
