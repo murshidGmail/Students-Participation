@@ -79,10 +79,11 @@ class StudentParticipationAPITester:
         )
         if success and 'access_token' in response:
             self.token = response['access_token']
-            self.teacher_id = response['teacher_id']
-            self.teacher_name = response['name']
-            return True
-        return False
+            self.teacher_id = response.get('teacher_id')
+            self.teacher_name = response.get('name')
+            print(f"Registration response: {response}")
+            return True, email
+        return False, None
 
     def test_login(self, email, password):
         """Test teacher login"""
