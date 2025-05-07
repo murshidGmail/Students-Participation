@@ -86,22 +86,39 @@ class StudentParticipationAPITester:
 
     def test_login(self, email, password):
         """Test teacher login"""
-        success, response = self.run_test(
-            "Teacher Login",
-            "POST",
-            "token",
-            200,
-            data={
-                "username": email,
-                "password": password
-            }
-        )
-        if success and 'access_token' in response:
-            self.token = response['access_token']
-            self.teacher_id = response['teacher_id']
-            self.teacher_name = response['name']
-            return True
-        return False
+        url = f"{self.base_url}/token"
+        headers = {}
+        if self.token:
+            headers['Authorization'] = f'Bearer {self.token}'
+        
+        self.tests_run += 1
+        print(f"\n🔍 Testing Teacher Login...")
+        
+        try:
+            # Use form data instead of JSON for OAuth2 login
+            response = requests.post(
+                url, 
+                data={"username": email, "password": password},
+                headers=headers
+            )
+            
+            success = response.status_code == 200
+            if success:
+                self.tests_passed += 1
+                print(f"✅ Passed - Status: {response.status_code}")
+                response_data = response.json()
+                self.token = response_data['access_token']
+                self.teacher_id = response_data['teacher_id']
+                self.teacher_name = response_data['name']
+                return True
+            else:
+                print(f"❌ Failed - Expected 200, got {response.status_code}")
+                print(f"Response: {response.text}")
+                return False
+                
+        except Exception as e:
+            print(f"❌ Failed - Error: {str(e)}")
+            return False
 
     def test_create_class(self, class_name):
         """Test creating a class"""
